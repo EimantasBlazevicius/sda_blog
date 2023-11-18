@@ -23,7 +23,9 @@
         {% csrf_token %}
         {% if user == post.author or is_mod %}
           {% if not is_blocked %}
-            <button class="btn btn-success w-100">Edit</button>
+            <a href="{% url 'post_update' post.pk %}">
+              <button type="button" class="btn btn-success w-100">Edit</button>
+            </a>
           {% endif %}
           <button class="btn btn-danger w-100 mt-3" name="delete" value="{{post.pk}}">Delete</button>
         {% endif %}

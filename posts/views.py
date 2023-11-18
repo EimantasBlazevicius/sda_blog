@@ -44,6 +44,22 @@ def post_detail(request, pk):
     return render(request, "post_detail.html", context={"post": post, "is_mod": is_mod, "is_blocked": is_blocked})
 
 
+@permission_required('posts.change_post', raise_exception=True)
+@login_required
+def post_update(request, pk):
+    post = Post.objects.get(pk=pk)
+
+    if request.method == "POST":
+        post.title = request.POST.get("title")
+        post.body = request.POST.get("body")
+        post.author = request.user
+        post.save()
+
+        return redirect("post_detail", pk=post.pk)
+
+    return render(request, "edit_post.html", context={"post": post})
+
+
 @permission_required('posts.add_post', raise_exception=True)
 @login_required
 def create_post(request):
